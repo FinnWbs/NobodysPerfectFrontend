@@ -1,111 +1,57 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <input v-model="frageField" placeholder="Frage" type="text" ref="frageInput">
-    <input v-model="antwortField" placeholder="Antwort" type="text" ref="antwortInput">
-    <input v-model="playerIDField" placeholder="playerID" @keyup.enter="save()">
-    <button type="button" @click="save()">Save</button>
-  </div>
-  <div style="display: flex; justify-content: center">
-    <table>
-      <txtContainer>
-        <thead>
-        <tr>
-          <th>Frage</th>
-          <th>Antwort</th>
-          <th>playerID</th>
-        </tr>
-        </thead>
-      </txtContainer>
-      <tbody>
-      <tr v-if="items.length === 0">
-        <td colspan="2">Keine Fragen</td>
-      </tr>
-      <tr v-for="item in items" :key="item.id">
-        <td>{{item.frage}}</td>
-        <td>{{item.antwort}}</td>
-        <td>{{item.playerid}}</td>
-      </tr>
-      <tr>
-        <td>{{frageField}}</td>
-        <td>{{antwortField}}</td>
-        <td>{{playerIDField}}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+  <v-card class="mx-auto" max-width="450">
+    <v-toolbar color="cyan-lighten-1">
+      <v-btn variant="text" icon="mdi-menu"></v-btn>
+
+      <v-toolbar-title>Spiele</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn variant="text" icon="mdi-magnify"></v-btn>
+    </v-toolbar>
+
+    <v-list :items="items" item-props lines="three">
+      <template v-slot:subtitle="{ subtitle }">
+        <div v-html="subtitle"></div>
+      </template>
+    </v-list>
+  </v-card>
 </template>
 
 <script>
 export default {
-  name: 'DynamicForm',
-  props: ['title'],
-  data () {
-    return {
-      items: [],
-      frageField: '',
-      antwortField: '',
-      playerIDField: ''
-    }
-  },
-  methods: {
-    loadThings () {
-      const endpoint= 'http://localhost:8080/frage';
-      const requestoptions = {
-        method: 'GET',
-        redirect: 'follow'
-      }
-      fetch(endpoint, requestoptions)
-          .then(response => response.json())
-          .then(result => result.forEach(frage => {
-            this.items.push(frage)
-          }))
-          .catch(error => console.log('error', error))
-    },
-    save () {
-      const endpoint= 'http://localhost:8080/frage';
-      const data = {
-        frage: this.frageField,
-        antwort: this.antwortField,
-        playerid: this.playerIDField
-      }
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      }
-      fetch(endpoint, requestOptions)
-          .then(response => response.json())
-          .then(data => {
-            console.log('Success:', data)
-          })
-          .catch(error => console.log('error', error))
-    }
-
-  },
+  data: () => ({
+    items: [
+      {
+        title: 'Brunch this weekend?',
+        subtitle: `<span class="text-primary">Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
+      },
+      { type: 'divider', inset: true },
+      {
+        title: 'Summer BBQ',
+        subtitle: `<span class="text-primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.`,
+      },
+      { type: 'divider', inset: true },
+      {
+        title: 'Oui oui',
+        subtitle:
+            '<span class="text-primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?',
+      },
+      { type: 'divider', inset: true },
+      {
+        title: 'Birthday gift',
+        subtitle:
+            '<span class="text-primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?',
+      },
+      { type: 'divider', inset: true },
+      {
+        title: 'Recipe to try',
+        subtitle:
+            '<span class="text-primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
+      },
+    ],
+  }),
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-txtContainer {
-  display: flex;
-  align-content: center;
-}
-</style>
+
