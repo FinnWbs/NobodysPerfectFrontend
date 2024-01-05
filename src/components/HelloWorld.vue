@@ -31,9 +31,6 @@ export default {
   data () {
     return {
       items: [],
-      nameField: '',
-      antwortField: '',
-      playerIDField: ''
     }
   },
   created() {
