@@ -8,6 +8,7 @@
         ID: {{ player.id }}, Name: {{ player.playerName }}
       </li>
     </ul>
+    <button @click="deleteGame">Delete Game</button>
   </div>
   <div v-else>
     <p>Loading...</p>
@@ -44,6 +45,15 @@ export default {
           })
           .catch(error => console.log('error', error))
     },
+    deleteGame() {
+      const endpoint = `http://localhost:8080/game/${this.$route.params.id}`
+      const requestOptions = {
+        method: 'DELETE',
+      }
+      fetch(endpoint, requestOptions)
+          .then(() => this.$router.push("/"))
+          .catch(error => console.log('error', error))
+    }
   },
 
 }

@@ -19,7 +19,9 @@
       </v-list-item>
     </v-list>
   </v-card>
-
+  <RouterLink to="/game/create">
+    Create Game
+  </RouterLink>
 </template>
 
 <script>
