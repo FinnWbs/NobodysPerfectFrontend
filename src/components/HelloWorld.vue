@@ -11,47 +11,73 @@
     </v-toolbar>
 
     <v-list :items="items" item-props lines="three">
-      <template v-slot:subtitle="{ subtitle }">
-        <div v-html="subtitle"></div>
-      </template>
+      <v-list-item v-for="game in items" :key="game.id">
+        <v-list-item-content>
+          <v-list-item-title>{{ game.name }}</v-list-item-title>
+          <v-list-item-subtitle v-for="player in game.players" :key="player.id">
+            {{ player.playerid }}
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
   </v-card>
+
 </template>
 
 <script>
 export default {
-  data: () => ({
-    items: [
-      {
-        title: 'Brunch this weekend?',
-        subtitle: `<span class="text-primary">Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
-      },
-      { type: 'divider', inset: true },
-      {
-        title: 'Summer BBQ',
-        subtitle: `<span class="text-primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.`,
-      },
-      { type: 'divider', inset: true },
-      {
-        title: 'Oui oui',
-        subtitle:
-            '<span class="text-primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?',
-      },
-      { type: 'divider', inset: true },
-      {
-        title: 'Birthday gift',
-        subtitle:
-            '<span class="text-primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?',
-      },
-      { type: 'divider', inset: true },
-      {
-        title: 'Recipe to try',
-        subtitle:
-            '<span class="text-primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
-      },
-    ],
-  }),
+  name: 'DynamicForm',
+  props: ['title'],
+  data () {
+    return {
+      items: [],
+      nameField: '',
+      antwortField: '',
+      playerIDField: ''
+    }
+  },
+  created() {
+    this.loadThings();
+  },
+  methods: {
+    loadThings () {
+      const endpoint= 'http://localhost:8080/game';
+      const requestoptions = {
+        method: 'GET',
+        redirect: 'follow'
+      }
+      fetch(endpoint, requestoptions)
+          .then(response => response.json())
+          .then(result => result.forEach(game => {
+            this.items.push(game)
+          }))
+          .catch(error => console.log('error', error))
+    },
+    save () {
+      const endpoint= 'http://localhost:8080/frage';
+      const data = {
+        name: this.nameField,
+        playerid: this.playerIDField
+      }
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }
+      fetch(endpoint, requestOptions)
+          .then(response => response.json())
+          .then(data => {
+            console.log('Success:', data)
+          })
+          .catch(error => console.log('error', error))
+    }
+
+  },
+
 }
+
 </script>
 
 
