@@ -15,7 +15,7 @@
         <v-list-item-content>
           <v-list-item-title>{{ game.name }}</v-list-item-title>
           <v-list-item-subtitle v-for="player in game.players" :key="player.id">
-            {{ player.playerid }}
+            {{ player.playerName }}
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -31,9 +31,8 @@ export default {
   data () {
     return {
       items: [],
-      nameField: '',
-      antwortField: '',
-      playerIDField: ''
+      idField: '',
+      playerNameField: ''
     }
   },
   created() {
@@ -54,10 +53,10 @@ export default {
           .catch(error => console.log('error', error))
     },
     save () {
-      const endpoint= 'http://localhost:8080/frage';
+      const endpoint= 'http://localhost:8080/game';
       const data = {
-        name: this.nameField,
-        playerid: this.playerIDField
+        id: this.idField,
+        playerName: this.playerNameField
       }
       const requestOptions = {
         method: 'POST',
