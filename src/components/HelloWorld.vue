@@ -1,15 +1,13 @@
 <template>
-  <v-card class="mx-auto" max-width="450">
-    <v-toolbar color="cyan-lighten-1">
-      <v-btn variant="text" icon="mdi-menu"></v-btn>
+  <v-card class="mx-auto" max-width="1000">
+    <v-toolbar style="border: 3px solid red" color="cyan-lighten-1">
 
-      <v-toolbar-title>Spiele</v-toolbar-title>
+      <v-toolbar-title >Spiele</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
       <v-btn variant="text" icon="mdi-magnify"></v-btn>
     </v-toolbar>
-
     <v-list :items="items" item-props lines="three">
       <template v-slot:subtitle="{ subtitle }">
         <div v-html="subtitle"></div>
@@ -23,35 +21,28 @@ export default {
   data: () => ({
     items: [
       {
-        title: 'Brunch this weekend?',
-        subtitle: `<span class="text-primary">Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
-      },
-      { type: 'divider', inset: true },
-      {
-        title: 'Summer BBQ',
-        subtitle: `<span class="text-primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.`,
-      },
-      { type: 'divider', inset: true },
-      {
-        title: 'Oui oui',
         subtitle:
-            '<span class="text-primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?',
-      },
-      { type: 'divider', inset: true },
-      {
-        title: 'Birthday gift',
-        subtitle:
-            '<span class="text-primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?',
-      },
-      { type: 'divider', inset: true },
-      {
-        title: 'Recipe to try',
-        subtitle:
-            '<span class="text-primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
-      },
+            `
+<tr v-if="items.length === 0">
+          <td colspan="2">Keine Spiele</td>
+        </tr>
+        <tr v-for="item in items" :key="item.id">
+          <td>{{}}</td>
+</tr>
+
+`,
+      }
     ],
   }),
 }
 </script>
+
+<style>
+.Box-Überschrift {
+  display: flex;
+  justify-items: center;
+}
+
+</style>
 
 
