@@ -1,0 +1,64 @@
+<template>
+  <v-card class="mx-auto" max-width="450">
+    <v-toolbar color="cyan-lighten-1">
+      <v-btn variant="text" icon="mdi-menu"></v-btn>
+      <v-toolbar-title>Spiele</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn variant="text" icon="mdi-magnify"></v-btn>
+    </v-toolbar>
+    <v-list :items="items" item-props lines="three">
+      <v-list-item v-for="game in items" :key="game.id">
+        <RouterLink :to="`/game/${game.id}`">
+          <v-list-item-content>
+            <v-list-item-title>{{ game.name }}</v-list-item-title>
+            <v-list-item-subtitle v-for="player in game.players" :key="player.id">
+              {{ player.playerName }}
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </RouterLink>
+      </v-list-item>
+    </v-list>
+  </v-card>
+  <RouterLink to="/game/create">
+    Create Game
+  </RouterLink>
+</template>
+
+<script>
+import {RouterLink} from "vue-router";
+
+export default {
+  // Todo verstehen was die felder name, components, props bedeuten
+  name: 'DynamicForm',
+  components: {RouterLink},
+  props: ['title'],
+  data() {
+    return {
+      items: [],
+      idField: '',
+      playerNameField: ''
+    }
+  },
+  created() {
+    this.listGames();
+  },
+  methods: {
+    listGames() {
+      const endpoint = 'http://localhost:8080/game';
+      const requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      }
+      fetch(endpoint, requestOptions)
+          .then(response => response.json())
+          .then(result => result.forEach(game => {
+            this.items.push(game)
+          }))
+          .catch(error => console.log('error', error))
+    }
+  },
+}
+
+</script>
+
+
