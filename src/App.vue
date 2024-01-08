@@ -6,15 +6,12 @@ import HelloWorld from './components/GameList.vue'
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+        <v-btn>
+          <v-icon icon="md:home"></v-icon>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+          <RouterLink to="/" class="router-link-custom">Home</RouterLink>
+        </v-btn>
     </div>
   </header>
 
@@ -82,5 +79,10 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+
+}
+.router-link-custom {
+  text-decoration: none;
+  color: inherit;
 }
 </style>
