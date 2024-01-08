@@ -7,11 +7,9 @@ import HelloWorld from './components/GameList.vue'
 <template>
   <header>
     <div class="wrapper">
-        <v-btn>
-          <v-icon icon="md:home"></v-icon>
-
-          <RouterLink to="/" class="router-link-custom">Home</RouterLink>
-        </v-btn>
+      <v-btn>
+        <RouterLink to="/">Home</RouterLink>
+      </v-btn>
     </div>
   </header>
 
@@ -36,9 +34,7 @@ nav {
   margin-top: 2rem;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
+
 
 nav a.router-link-exact-active:hover {
   background-color: transparent;
@@ -79,10 +75,5 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
-
-}
-.router-link-custom {
-  text-decoration: none;
-  color: inherit;
 }
 </style>

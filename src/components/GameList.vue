@@ -16,7 +16,7 @@
     </v-toolbar>
     <v-list :items="items" item-props lines="three">
       <v-list-item v-for="game in items" :key="game.id">
-        <RouterLink :to="`/game/${game.id}`">
+        <RouterLink :to="`/game/${game.id}`" style="text-underline: none">
           <v-list-item-content>
             <v-list-item-title>{{ game.name }}</v-list-item-title>
             <v-list-item-subtitle v-for="player in game.players" :key="player.id">
@@ -27,22 +27,19 @@
       </v-list-item>
     </v-list>
   </v-card>
-  <v-col cols="12" sm="6" md="4" class="mx-auto d-flex align-center">
-    <v-btn block rounded="lg" size="x-large" elevation="8">
-      <RouterLink to="/game/create" class="router-link-custom">
-      Create Game
-    </RouterLink>
-    </v-btn>
-  </v-col>
-
-
+  <div style="display: flex;justify-content: center">
+    <CreateGameButton/>
+  </div>
 </template>
 
 <script>
 import {RouterLink} from "vue-router";
+import CreateGameButton from "@/components/CreateGameButton.vue";
 
 export default {
-  // Todo verstehen was die felder name, components, props bedeuten
+  name: 'DynamicForm',
+  components: {CreateGameButton, RouterLink},
+  props: [],
   data() {
     return {
       items: [],
@@ -73,28 +70,3 @@ export default {
 </script>
 
 
-<style scoped>
-/* Add a scoped style block to apply styles to this component only */
-.center-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.router-link-custom {
-  text-decoration: none; /* Remove the underline */
-  color: inherit; /* Use the default text color */
-}
-
-.custom-font {
-  font-family: Geneva, Verdana, sans-serif;
-;
-  font-size: 30px;
-}
-
-.center-sum {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>

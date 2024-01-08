@@ -1,16 +1,16 @@
 <template>
-  <div>
-    <h1>{{ title }}</h1>
-    <form @submit.prevent="save">
-      <div>
+  <div class="formCreateContainer">
+
+    <form @submit.prevent="save" class="formContainer">
+      <div class="formRow">
         <label for="gameName">Game Name:</label>
-        <input type="text" id="gameName" v-model="gameName" />
+        <input type="text" id="gameName" v-model="gameName" class="formInput" />
       </div>
-      <div>
+      <div class="formRow">
         <label for="gameCreatorName">Creator Name:</label>
-        <input type="text" id="gameCreatorName" v-model="gameCreatorName" />
+        <input type="text" id="gameCreatorName" v-model="gameCreatorName" class="formInput" />
       </div>
-      <button type="submit">Create Game</button>
+      <button type="submit" class="formButton">Create Game</button>
     </form>
   </div>
 </template>
@@ -52,3 +52,38 @@ export default {
   }
 }
 </script>
+
+<style>
+.formContainer {
+  border: solid 1px white;
+  max-width: 500px;
+  border-radius: 16px;
+  padding: 16px
+}
+
+.formRow {
+  margin-bottom: 1rem;
+  border-bottom: solid 1px white;
+}
+
+.formInput {
+  color: white;
+  margin-left: 15px;
+}
+
+.formButton {
+  border: solid 1px white;
+  padding: 8px;
+  border-radius: 16px;
+  &:hover {
+    background: red;
+  }
+  width: 100%
+}
+
+.formCreateContainer {
+  display: flex;
+  justify-content: center;
+
+}
+</style>
