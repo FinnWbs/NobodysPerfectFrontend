@@ -1,5 +1,8 @@
 {
   "files": [],
+  "compilerOptions": {
+    "types": ["jest"]
+  },
   "references": [
     {
       "path": "./tsconfig.node.json"
