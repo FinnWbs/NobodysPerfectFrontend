@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="450">
+  <v-card class="mx-auto" max-width="450" min-height="500">
     <v-toolbar color="cyan-lighten-1">
       <v-btn variant="text" icon="mdi-menu"></v-btn>
       <v-toolbar-title>Spiele</v-toolbar-title>
@@ -19,19 +19,20 @@
       </v-list-item>
     </v-list>
   </v-card>
-  <RouterLink to="/game/create">
-    Create Game
-  </RouterLink>
+  <div style="display: flex;justify-content: center">
+    <CreateGameButton/>
+  </div>
 </template>
 
 <script>
 import {RouterLink} from "vue-router";
+import CreateGameButton from "@/components/CreateGameButton.vue";
 
 export default {
   // Todo verstehen was die felder name, components, props bedeuten
   name: 'DynamicForm',
-  components: {RouterLink},
-  props: ['title'],
+  components: {CreateGameButton, RouterLink},
+  props: [],
   data() {
     return {
       items: [],
@@ -61,4 +62,14 @@ export default {
 
 </script>
 
+/**
+1. Tests schreiben
+2. Gamepage-Eingabe Spieler
+          - Weiterleritung auf Spielerpage
+                - Jeder hat einheitliche Seite, mit eiunheitlichen Tabellenabfragen
+
+
+3. Spielerliste - daneben die Punktezahl anzeigen
+      und den mit den meisten Punkten highlighten
+*/
 

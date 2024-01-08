@@ -15,19 +15,20 @@
         </form>
       </li>
     </ul>
+
+
     <DeleteGameButton @click="deleteGame"/>
+
   </div>
 </template>
 
 <script>
 import {RouterLink} from "vue-router";
 import DeleteGameButton from "@/components/DeleteGameButton.vue";
-import JoinGame from "@/components/JoinGame.vue";
-import JoinGameButton from "@/components/JoinGameButton.vue";
 
 export default {
   name: 'DynamicForm',
-  components: {JoinGameButton, JoinGame, DeleteGameButton, RouterLink},
+  components: {DeleteGameButton, RouterLink},
   props: ['title'],
   data () {
     return {
@@ -72,16 +73,18 @@ export default {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       };
+
       fetch(endpoint, requestOptions)
           .then(response => response.json())
           .then(data => {
             console.log('Success:', data);
             // Reset form or handle success
-            this.$router.push(`/game/${this.game.id}`);
+            console.log(this.$route.params.id);
+            this.$router.push(`/game/${this.$route.params.id}`);
           })
           .catch(error => console.log('error', error));
     }
-  },
+  }
 
 }
 
