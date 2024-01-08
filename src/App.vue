@@ -7,9 +7,9 @@ import HelloWorld from './components/GameList.vue'
 <template>
   <header>
     <div class="wrapper">
-      <nav>
+      <v-btn>
         <RouterLink to="/">Home</RouterLink>
-      </nav>
+      </v-btn>
     </div>
   </header>
 
@@ -17,6 +17,10 @@ import HelloWorld from './components/GameList.vue'
 </template>
 
 <style scoped>
+
+.homeButtonForm {
+  border: red 5px;
+}
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -34,9 +38,7 @@ nav {
   margin-top: 2rem;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
+
 
 nav a.router-link-exact-active:hover {
   background-color: transparent;

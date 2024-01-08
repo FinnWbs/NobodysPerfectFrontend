@@ -8,7 +8,7 @@
     </v-toolbar>
     <v-list :items="items" item-props lines="three">
       <v-list-item v-for="game in items" :key="game.id">
-        <RouterLink :to="`/game/${game.id}`">
+        <RouterLink :to="`/game/${game.id}`" style="text-underline: none">
           <v-list-item-content>
             <v-list-item-title>{{ game.name }}</v-list-item-title>
             <v-list-item-subtitle v-for="player in game.players" :key="player.id">
@@ -29,7 +29,6 @@ import {RouterLink} from "vue-router";
 import CreateGameButton from "@/components/CreateGameButton.vue";
 
 export default {
-  // Todo verstehen was die felder name, components, props bedeuten
   name: 'DynamicForm',
   components: {CreateGameButton, RouterLink},
   props: [],
