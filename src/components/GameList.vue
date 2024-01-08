@@ -8,11 +8,6 @@
       <img alt="Vue logo" class="logo" src="@/assets/gptLogo.png" width="100" height="100" style="opacity: 0.0" />
       <img alt="Vue logo" class="logo" src="@/assets/gptLogo.png" width="50" height="50" style="margin-bottom: 15px; opacity: 0.4  " />
       <img alt="Vue logo" class="logo" src="@/assets/gptLogo.png" width="20" height="20" style="margin-top: 15px; opacity: 0.7  " />
-
-
-      <!--      <v-toolbar-title class = "custom-font" style="flex: 1; text-align: center; padding-top: 5px; padding-bottom: 5px;">Spiele</v-toolbar-title>-->
-
-      <!--      <v-spacer></v-spacer>-->
     </v-toolbar>
     <v-list :items="items" item-props lines="three">
       <v-list-item v-for="game in items" :key="game.id">
@@ -69,4 +64,28 @@ export default {
 
 </script>
 
+<style scoped>
+/* Add a scoped style block to apply styles to this component only */
+.center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.router-link-custom {
+  text-decoration: none; /* Remove the underline */
+  color: inherit; /* Use the default text color */
+}
 
+.custom-font {
+  font-family: Geneva, Verdana, sans-serif;
+;
+  font-size: 30px;
+}
+
+.center-sum {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
