@@ -5,21 +5,18 @@ import HelloWorld from './components/GameList.vue'
 </script>
 
 <template>
-  <header class="homeButtonForm">
-      <v-btn text-decoration: none>
-        <a href="/">Home</a>
+  <header>
+    <div class="wrapper">
+      <v-btn>
+        <RouterLink to="/">Home</RouterLink>
       </v-btn>
+    </div>
   </header>
 
   <RouterView />
 </template>
 
 <style scoped>
-
-.homeButtonForm {
-  display: flex;
-  margin-left: 140px;
-}
 header {
   line-height: 1.5;
   max-height: 100vh;
