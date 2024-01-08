@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto" max-width="450" min-height="500">
-    <v-toolbar color="cyan-lighten-1">
+    <v-toolbar color= #C0C0C0 >
       <v-btn variant="text" icon="mdi-menu"></v-btn>
       <v-toolbar-title>Spiele</v-toolbar-title>
       <v-spacer></v-spacer>

@@ -12,10 +12,9 @@
 <style scoped>
 .button-link:hover .material-icons {
   transition: box-shadow 0.4s;
-  color: lightgrey;
+  color: #E4A672;
 }
 .button-link{
-  color: inherit;
   display: flex;
   align-items: center;
   justify-content: center;
