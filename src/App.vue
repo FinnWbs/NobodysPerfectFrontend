@@ -18,7 +18,6 @@ import { RouterLink, RouterView } from 'vue-router'
 Button {
   font-weight: bold;
   font-size: xx-large;
-  background: #2c3e50;
   display: flex;
   margin-left: 200px;
   text-decoration: none;

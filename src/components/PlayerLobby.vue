@@ -4,17 +4,13 @@
     <br/>
     <ul>
       <div class="text-h5">
-        <p>ENTER YOUR GAMERTAG</p>
+        <p>game.spieler</p>
       </div>
       <li v-for="player in game.spieler" :key="player.id">
         {{ player.playerName }}
-        <form @submit.prevent="joinGame">
-          <label for="newPlayer">Spielername:</label>
-          <input type="text" id="newPlayer" v-model="newPlayer" />
-          <button type="submit">join</button>
-        </form>
       </li>
     </ul>
+
     <DeleteGameButton @click="deleteGame"/>
   </div>
 </template>
@@ -30,7 +26,7 @@
 <script>
 import {RouterLink} from "vue-router";
 import DeleteGameButton from "@/components/DeleteGameButton.vue";
-import JoinGame from "@/components/JoinGame.vue";
+import JoinGame from "@/components/GameLobby.vue";
 import JoinGameButton from "@/components/JoinGameButton.vue";
 
 export default {
@@ -41,7 +37,7 @@ export default {
     return {
       game: null,
       gameId: '',
-      newPlayer: ''
+      PlayerID: ''
     }
   },
   created() {
@@ -88,6 +84,12 @@ export default {
             this.$router.push(`/game/${this.game.id}/join`);
           })
           .catch(error => console.log('error', error));
+    },
+    getPlayerById (id) {
+      const endpoint = `http://localhost:8080/game/${id}`;
+      const requestOptions = {
+        method: 'GET',
+      }
     }
   },
 

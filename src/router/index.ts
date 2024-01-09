@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import GameList from "@/components/GameList.vue";
-import GameLobby from "@/components/GameLobby.vue";
+import InputGamerTag from "@/components/InputGamerTag.vue";
 import CreateGameForm from "@/components/CreateGameForm.vue";
-import JoinGame from "@/components/JoinGame.vue";
+import GameLobby from "@/components/GameLobby.vue";
+import PlayerLobby from "@/components/PlayerLobby.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,8 +14,9 @@ const router = createRouter({
       component: GameList
     },
     { path: '/game/create', component: CreateGameForm },
-    { path: '/game/:id', component: GameLobby },
-    { path: '/game/:id/join', component: JoinGame },
+    { path: '/game/:id', component: InputGamerTag },
+    { path: '/game/:id/lobby', component: GameLobby },
+    { path: '/game/:id/lobby/playerlobby', component: PlayerLobby },
   ]
 })
 

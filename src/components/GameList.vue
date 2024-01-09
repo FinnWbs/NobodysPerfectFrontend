@@ -10,11 +10,11 @@
       <img alt="Vue logo" class="logo" src="@/assets/gptLogo.png" width="20" height="20" style="margin-top: 15px; opacity: 0.7  " />
     </v-toolbar>
   </v-card>
-      <v-chip-group class="listForm" v-for="game in items" :key="game.id">
-        <RouterLink :to="`/game/${game.id}`" >
-            <v-chip style="width: 600px">{{ game.name }}</v-chip>
-        </RouterLink>
-      </v-chip-group>
+  <v-chip-group class="listForm" v-for="game in items" :key="game.id">
+    <RouterLink :to="`/game/${game.id}`" >
+      <v-chip style="width: 600px">{{ game.name }}</v-chip>
+    </RouterLink>
+  </v-chip-group>
 
 
   <div style="display: flex;justify-content: center">

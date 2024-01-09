@@ -1,66 +1,26 @@
 <template>
   <div v-if="game">
-    <p class=".font-weight-black, text-lg-h6, headline">{{ game.name }}</p>
-  </div>
+    <p class=".font-weight-black" style="display: flex; justify-content: center">{{ game.name }}</p>
     <br/>
-
-    <p class="headline2">ENTER YOUR GAMERTAG</p>
-        <div class="gamertagInput">
-        <form @submit.prevent="joinGame" class="gamertagInput">
-          <label for="newPlayer" class="headline2">Spielername:</label>
-          <input type="text" id="newPlayer" v-model="newPlayer"/>
-
-        </form>
-
-        </div>
-  <div class="joinButton">
-            <v-btn type="submit">join</v-btn>
-            <DeleteGameButton @click="deleteGame"/>
+    <ul>
+      <div>
+        <p>Spieler</p>
+      </div>
+      <li v-for="player in game.spieler" :key="player.id">
+        {{ player.playerName }}
+      </li>
+    </ul>
+    <DeleteGameButton @click="deleteGame"/>
   </div>
-
 </template>
-
-<style>
-.headline{
-  font-size: xxx-large;
-  color: #181818;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-}
-.headline2{
-  font-size: x-large;
-  color: #181400;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-}
-.gamertagInput{
-  max-width: 70%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: x-large;
-}
-.joinButton{
-  font-size: x-large;
-  color: #181400;
-  font-weight: bold;
-  border-color: red;
-  display: flex;
-  justify-content: center;
-}
-</style>
 
 <script>
 import {RouterLink} from "vue-router";
 import DeleteGameButton from "@/components/DeleteGameButton.vue";
-import JoinGame from "@/components/JoinGame.vue";
-import JoinGameButton from "@/components/JoinGameButton.vue";
 
 export default {
   name: 'DynamicForm',
-  components: {JoinGameButton, JoinGame, DeleteGameButton, RouterLink},
+  components: {DeleteGameButton, RouterLink},
   props: ['title'],
   data () {
     return {
@@ -95,26 +55,28 @@ export default {
           .catch(error => console.log('error', error))
     },
     joinGame() {
-      const endpoint = 'http://localhost:8080/game/join';
+      const endpoint = 'http://localhost:8080/game/lobby';
       const data = {
         gameId: this.$route.params.id,
-        spielerName: this.newPlayer
+        spielerName: this.newPlayera
       };
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       };
+
       fetch(endpoint, requestOptions)
           .then(response => response.json())
           .then(data => {
             console.log('Success:', data);
             // Reset form or handle success
-            this.$router.push(`/game/${this.game.id}/join`);
+            console.log(this.$route.params.id);
+            this.$router.push(`/game/${this.$route.params.id}`);
           })
           .catch(error => console.log('error', error));
     }
-  },
+  }
 
 }
 
