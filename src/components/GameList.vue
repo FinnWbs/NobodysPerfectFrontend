@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto" max-width="650">
-    <v-toolbar color="#2c3e50" class ="center-sum">
+    <v-toolbar color="#131818" class ="center-sum">
       <img alt="Vue logo" class="logo" src="@/assets/gptLogo.png" width="80" height="80" />
       <img alt="Vue logo" class="logo" src="@/assets/gptLogo.png" width="40" height="40" style="margin-bottom: 15px; margin-right: 20px" />
       <img alt="Vue logo" class="logo" src="@/assets/gptLogo.png" width="30" height="30" style="margin-top: 30px; opacity: 0.6  " />

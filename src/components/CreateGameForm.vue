@@ -76,7 +76,7 @@ export default {
   padding: 8px;
   border-radius: 16px;
   &:hover {
-    background: red;
+    background: dimgray;
   }
   width: 100%
 }
@@ -86,5 +86,6 @@ export default {
   display: flex;
   justify-content: center;
   color: #2c3e50;
+  margin-top: 200px;
 }
 </style>

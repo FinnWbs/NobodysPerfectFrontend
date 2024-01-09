@@ -1,15 +1,18 @@
 <template>
 
-  <p class=".font-weight-black, text-lg-h6, headline" style="text-decoration: underline">{{ game.name }}</p>
-    <ul>
-      <br/><br/>
-      <div class="playerHighlight">{{PlayerID}}</div>
-      <br/>
-      <li v-for="player in game.spieler" :key="player.id">
-        {{ player.playerName }}
-      </li>
-    </ul>
+  <p class=".font-weight-black, headline" style="text-decoration: underline">{{ game.name }}</p>
 
+  <br/>
+  <br/>
+  <div1 class="boxPlayerList">
+    <div2 class="boxPlayerListItems">
+      <div3 class="playerHighlight">{{PlayerID}}</div3>
+  <br/>
+      <div v-for="player in game.spieler" :key="player.id">
+        {{ player.playerName }}
+      </div>
+         </div2>
+  </div1>
     <DeleteGameButton @click="deleteGame"/>
 
 </template>
@@ -24,7 +27,21 @@
   font-size: large;
   color: #181818;
   border-color: #181400;
-  border: 2px;
+  border: 4px;
+
+}
+.boxPlayerList{
+  display: flex;
+  justify-content: center;
+  border: solid 2px;
+  border-color:  #181818;
+  margin-left: 100px;
+  margin-right: 1600px;
+  padding-top: 20px;
+  padding-bottom: 40px;
+}
+.boxPlayerListItems{
+  flex-direction: column;
 }
 </style>
 
