@@ -12,7 +12,7 @@
 <style scoped>
 .button-link:hover .material-icons {
   transition: box-shadow 0.4s;
-  color: #E4A672;
+  box-shadow: #2c3e50;
 }
 .button-link{
   display: flex;

@@ -1,33 +1,41 @@
 <template>
   <div v-if="game">
-    <p class=".font-weight-black" style="display: flex; justify-content: center">{{ game.name }}</p>
+    <p class=".font-weight-black, text-lg-h6, headline" style="display: flex; justify-content: center">{{ game.name }}</p>
     <br/>
     <ul>
-      <div>
-        <p>Spieler</p>
+      <div class="text-h5">
+        <p>ENTER YOUR GAMERTAG</p>
       </div>
       <li v-for="player in game.spieler" :key="player.id">
         {{ player.playerName }}
-        <div>
         <form @submit.prevent="joinGame">
           <label for="newPlayer">Spielername:</label>
           <input type="text" id="newPlayer" v-model="newPlayer" />
           <button type="submit">join</button>
         </form>
-        </div>
       </li>
     </ul>
     <DeleteGameButton @click="deleteGame"/>
   </div>
 </template>
 
+<style>
+.headline{
+  font-size: xxx-large;
+  color: #181818;
+  font-weight: bold;
+}
+</style>
+
 <script>
 import {RouterLink} from "vue-router";
 import DeleteGameButton from "@/components/DeleteGameButton.vue";
+import JoinGame from "@/components/JoinGame.vue";
+import JoinGameButton from "@/components/JoinGameButton.vue";
 
 export default {
   name: 'DynamicForm',
-  components: {DeleteGameButton, RouterLink},
+  components: {JoinGameButton, JoinGame, DeleteGameButton, RouterLink},
   props: ['title'],
   data () {
     return {
@@ -72,18 +80,16 @@ export default {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       };
-
       fetch(endpoint, requestOptions)
           .then(response => response.json())
           .then(data => {
             console.log('Success:', data);
             // Reset form or handle success
-            console.log(this.$route.params.id);
-            this.$router.push(`/game/${this.$route.params.id}`);
+            this.$router.push(`/game/${this.game.id}/join`);
           })
           .catch(error => console.log('error', error));
     }
-  }
+  },
 
 }
 

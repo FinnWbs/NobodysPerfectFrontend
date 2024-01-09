@@ -1,6 +1,6 @@
 <template>
-  <v-card class="mx-auto" max-width="450">
-    <v-toolbar color="red" class ="center-sum">
+  <v-card class="mx-auto" max-width="650">
+    <v-toolbar color="#2c3e50" class ="center-sum">
       <img alt="Vue logo" class="logo" src="@/assets/gptLogo.png" width="80" height="80" />
       <img alt="Vue logo" class="logo" src="@/assets/gptLogo.png" width="40" height="40" style="margin-bottom: 15px; margin-right: 20px" />
       <img alt="Vue logo" class="logo" src="@/assets/gptLogo.png" width="30" height="30" style="margin-top: 30px; opacity: 0.6  " />
@@ -9,19 +9,14 @@
       <img alt="Vue logo" class="logo" src="@/assets/gptLogo.png" width="50" height="50" style="margin-bottom: 15px; opacity: 0.4  " />
       <img alt="Vue logo" class="logo" src="@/assets/gptLogo.png" width="20" height="20" style="margin-top: 15px; opacity: 0.7  " />
     </v-toolbar>
-    <v-list :items="items" item-props lines="three">
-      <v-list-item v-for="game in items" :key="game.id">
-        <RouterLink :to="`/game/${game.id}`" style="text-underline: none">
-          <v-list-item-content>
-            <v-list-item-title>{{ game.name }}</v-list-item-title>
-            <v-list-item-subtitle v-for="player in game.players" :key="player.id">
-              {{ player.playerName }}
-            </v-list-item-subtitle>
-          </v-list-item-content>
-        </RouterLink>
-      </v-list-item>
-    </v-list>
   </v-card>
+      <v-chip-group class="listForm" v-for="game in items" :key="game.id">
+        <RouterLink :to="`/game/${game.id}`" >
+            <v-chip style="width: 600px">{{ game.name }}</v-chip>
+        </RouterLink>
+      </v-chip-group>
+
+
   <div style="display: flex;justify-content: center">
     <CreateGameButton/>
   </div>
@@ -65,7 +60,7 @@ export default {
 </script>
 
 <style scoped>
-/* Add a scoped style block to apply styles to this component only */
+
 .center-text {
   position: absolute;
   top: 50%;
@@ -73,19 +68,27 @@ export default {
   transform: translate(-50%, -50%);
 }
 .router-link-custom {
-  text-decoration: none; /* Remove the underline */
-  color: inherit; /* Use the default text color */
+  text-decoration: none;
+  color: inherit;
 }
 
 .custom-font {
   font-family: Geneva, Verdana, sans-serif;
 ;
-  font-size: 30px;
+  font-size: 40px;
 }
 
 .center-sum {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.listForm{
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+  &:hover{
+    background: transparent;
+  }
 }
 </style>

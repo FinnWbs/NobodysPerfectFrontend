@@ -1,23 +1,56 @@
 <template>
   <div v-if="game">
-    <p>Name: {{ game.name }}</p>
-    <br/>
-    <ul>
-      <div class="text-h5">
-        <p>Spieler</p>
-      </div>
-      <li v-for="player in game.spieler" :key="player.id">
-        {{ player.playerName }}
-        <form @submit.prevent="joinGame">
-          <label for="newPlayer">Spielername:</label>
-          <input type="text" id="newPlayer" v-model="newPlayer" />
-          <button type="submit">join</button>
-        </form>
-      </li>
-    </ul>
-    <DeleteGameButton @click="deleteGame"/>
+    <p class=".font-weight-black, text-lg-h6, headline">{{ game.name }}</p>
   </div>
+    <br/>
+
+    <p class="headline2">ENTER YOUR GAMERTAG</p>
+        <div class="gamertagInput">
+        <form @submit.prevent="joinGame" class="gamertagInput">
+          <label for="newPlayer" class="headline2">Spielername:</label>
+          <input type="text" id="newPlayer" v-model="newPlayer"/>
+
+        </form>
+
+        </div>
+  <div class="joinButton">
+            <v-btn type="submit">join</v-btn>
+            <DeleteGameButton @click="deleteGame"/>
+  </div>
+
 </template>
+
+<style>
+.headline{
+  font-size: xxx-large;
+  color: #181818;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+}
+.headline2{
+  font-size: x-large;
+  color: #181400;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+}
+.gamertagInput{
+  max-width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: x-large;
+}
+.joinButton{
+  font-size: x-large;
+  color: #181400;
+  font-weight: bold;
+  border-color: red;
+  display: flex;
+  justify-content: center;
+}
+</style>
 
 <script>
 import {RouterLink} from "vue-router";
@@ -77,7 +110,7 @@ export default {
           .then(data => {
             console.log('Success:', data);
             // Reset form or handle success
-            this.$router.push(`/game/${this.game.id}`);
+            this.$router.push(`/game/${this.game.id}/join`);
           })
           .catch(error => console.log('error', error));
     }
