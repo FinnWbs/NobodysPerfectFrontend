@@ -1,13 +1,11 @@
 <template>
   <div v-if="game">
-    <p class=".font-weight-black, text-lg-h6, headline">{{ game.name }}</p>
+    <p class=".font-weight-black, text-lg-h6, headline" style="text-decoration: underline">{{ game.name }}</p>
   </div>
     <br/>
-
     <p class="headline2">ENTER YOUR GAMERTAG</p>
         <form @submit.prevent="joinGame" class="gamertagInput">
-          <label for="newPlayer" class="headline2">Spielername:</label>
-          <input type="text" id="newPlayer" v-model="newPlayer"/>
+          <input type="text" style="justify-content: center" id="newPlayer" v-model="newPlayer"/>
           <v-btn type="submit">join</v-btn>
         </form>
   <div class="joinButton">
@@ -32,11 +30,11 @@
   justify-content: center;
 }
 .gamertagInput{
-  max-width: 70%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   font-size: x-large;
+  border: solid 1px black;
 }
 .joinButton{
   font-size: x-large;
@@ -45,6 +43,10 @@
   display: flex;
   justify-content: center;
 }
+ input[type="text"] {
+   text-align: center;
+ }
+
 </style>
 
 <script>
@@ -106,7 +108,7 @@ export default {
           .then(data => {
             console.log('Success:', data);
             // Reset form or handle success
-            this.$router.push(`/game/${this.game.gameId}`);
+            this.$router.push(`/game/${this.$route.params.id}/${this.newPlayer}`);
           })
           .catch(error => console.log('error', error));
     }

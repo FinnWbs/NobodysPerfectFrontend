@@ -1,18 +1,17 @@
 <template>
-  <div v-if="game">
-    <p class=".font-weight-black, text-lg-h6, headline" style="display: flex; justify-content: center">{{ game.name }}</p>
-    <br/>
+
+  <p class=".font-weight-black, text-lg-h6, headline" style="text-decoration: underline">{{ game.name }}</p>
     <ul>
-      <div class="text-h5">
-        <p>game.spieler</p>
-      </div>
+      <br/><br/>
+      <div class="playerHighlight">{{PlayerID}}</div>
+      <br/>
       <li v-for="player in game.spieler" :key="player.id">
         {{ player.playerName }}
       </li>
     </ul>
 
     <DeleteGameButton @click="deleteGame"/>
-  </div>
+
 </template>
 
 <style>
@@ -20,6 +19,12 @@
   font-size: xxx-large;
   color: #181818;
   font-weight: bold;
+}
+.playerHighlight{
+  font-size: large;
+  color: #181818;
+  border-color: #181400;
+  border: 2px;
 }
 </style>
 
@@ -42,6 +47,7 @@ export default {
   },
   created() {
     this.getGameById(this.$route.params.id);
+    this.PlayerID = this.$route.params.playerid;
   },
   methods: {
     getGameById (id) {
@@ -57,7 +63,7 @@ export default {
           .catch(error => console.log('error', error))
     },
     deleteGame() {
-      const endpoint = `http://localhost:8080/game/${this.$route.params.id}`
+      const endpoint = `http://localhost:8080/game/${this.gameId}`
       const requestOptions = {
         method: 'DELETE',
       }
@@ -84,12 +90,6 @@ export default {
             this.$router.push(`/game/${this.game.id}/join`);
           })
           .catch(error => console.log('error', error));
-    },
-    getPlayerById (id) {
-      const endpoint = `http://localhost:8080/game/${id}`;
-      const requestOptions = {
-        method: 'GET',
-      }
     }
   },
 
