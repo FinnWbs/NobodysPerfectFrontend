@@ -8,17 +8,14 @@
       </div>
       <li v-for="player in game.spieler" :key="player.id">
         {{ player.playerName }}
-        <form @submit.prevent="joinGame">
+        <form  v-if="isLastPlayer(index)" @submit.prevent="joinGame">
           <label for="newPlayer">Spielername:</label>
           <input type="text" id="newPlayer" v-model="newPlayer" />
           <button type="submit">join</button>
         </form>
       </li>
     </ul>
-
-
     <DeleteGameButton @click="deleteGame"/>
-
   </div>
 </template>
 
@@ -83,6 +80,9 @@ export default {
             this.$router.push(`/game/${this.$route.params.id}`);
           })
           .catch(error => console.log('error', error));
+    },
+    isLastPlayer(index) {
+      return index === this.game.spieler.length - 1;
     }
   }
 

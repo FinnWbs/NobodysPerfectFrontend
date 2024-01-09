@@ -3,17 +3,7 @@
 #app {
 
 
-@media (hover: hover) {
-  a:hover {
-    background-color: white;
-  }
-}
-  .v-application {
-    font-family: body-font-family, sans-serif;
-    .title {
-      font-family: title-font, sans-serif;
-    }
-  }
+
 
 
 }

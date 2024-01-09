@@ -77,9 +77,12 @@ export default {
           .then(data => {
             console.log('Success:', data);
             // Reset form or handle success
-            this.$router.push(`/game/${this.game.id}`);
+            this.$router.push(`/game/${this.game.id}/spieler/${data.id}`);
           })
           .catch(error => console.log('error', error));
+    },
+    showJoinForm() {
+      return this.game && this.game.spieler.length === 0;
     }
   },
 

@@ -3,12 +3,10 @@
 
     <form @submit.prevent="save" class="formContainer">
       <div class="formRow">
-        <label for="gameName">Game Name:</label>
-        <input type="text" id="gameName" v-model="gameName" class="formInput" />
+        <input type="text" id="gameName" v-model="gameName" :placeholder="gameNamePlaceholder" class="formInput" />
       </div>
       <div class="formRow">
-        <label for="gameCreatorName">Creator Name:</label>
-        <input type="text" id="gameCreatorName" v-model="gameCreatorName" class="formInput" />
+        <input type="text" id="gameCreatorName" v-model="gameCreatorName" :placeholder="creatorNamePlaceholder" class="formInput" />
       </div>
       <button type="submit" class="formButton">Create Game</button>
     </form>
@@ -25,7 +23,9 @@ export default {
   data() {
     return {
       gameName: '',
-      gameCreatorName: ''
+      gameCreatorName: '',
+      gameNamePlaceholder: 'Game Name',
+      creatorNamePlaceholder:'Creator Name'
     }
   },
   methods: {
@@ -82,8 +82,9 @@ export default {
 }
 
 .formCreateContainer {
+  max-width: inherit;
   display: flex;
   justify-content: center;
-
+  color: #2c3e50;
 }
 </style>
