@@ -1,16 +1,16 @@
 <template>
   <div v-if="game">
-    <p class=".font-weight-black, text-lg-h6, headline" style="text-decoration: underline">{{ game.name }}</p>
+    <p class=".font-weight-black, headline" style="text-decoration: underline">{{ game.name }}</p>
   </div>
     <br/>
     <p class="headline2">ENTER YOUR GAMERTAG</p>
-        <form @submit.prevent="joinGame" class="gamertagInput">
-          <input type="text" style="justify-content: center" id="newPlayer" v-model="newPlayer"/>
-          <v-btn type="submit">join</v-btn>
+        <form @submit.prevent="joinGame">
+          <input  class="gamertagInput" type="text" id="newPlayer" v-model="newPlayer"/>
+            <div class="joinButton">
+              <v-btn type="submit">join</v-btn>
+            </div>
         </form>
-  <div class="joinButton">
             <DeleteGameButton @click="deleteGame"/>
-  </div>
 
 </template>
 
@@ -30,9 +30,7 @@
   justify-content: center;
 }
 .gamertagInput{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  margin-left: 44%;
   font-size: x-large;
   border: solid 1px black;
 }

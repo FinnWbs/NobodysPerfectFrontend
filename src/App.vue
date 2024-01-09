@@ -5,16 +5,24 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
+  <header>
   <Button>
       <v-btn a href="/" style="text-decoration: none" height="50" width="100">
         Home
       </v-btn>
   </Button>
-
+  </header>
   <RouterView />
 </template>
 
 <style scoped>
+
+header{
+
+  padding-bottom: 30px;
+
+}
+
 Button {
   font-weight: bold;
   font-size: xx-large;
