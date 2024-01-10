@@ -1,30 +1,26 @@
 import { RouterLink, RouterView } from 'vue-router'
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/GameList.vue'
+
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <v-btn>
-        <RouterLink to="/">Home</RouterLink>
+  <Button>
+      <v-btn a href="/" style="text-decoration: none" height="50" width="100">
+        Home
       </v-btn>
-    </div>
-  </header>
+  </Button>
 
   <RouterView />
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+Button {
+  font-weight: bold;
+  font-size: xx-large;
+  display: flex;
+  margin-left: 200px;
+  text-decoration: none;
 }
 
 nav {
@@ -51,21 +47,6 @@ nav a:first-of-type {
 }
 
 @media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
 
   nav {
     text-align: left;
