@@ -16,7 +16,7 @@ const router = createRouter({
     { path: '/game/create', component: CreateGameForm },
     { path: '/game/:id', component: InputGamerTag },
     { path: '/game/:id/lobby', component: GameLobby },
-    { path: '/game/:id/lobby/playerlobby', component: PlayerLobby },
+    { path: '/game/:id/:newPlayer', component: PlayerLobby },
   ]
 })
 

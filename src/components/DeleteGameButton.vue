@@ -5,9 +5,12 @@
   <br/><br/><br/><br/><br/>
   <br/><br/><br/><br/><br/>
   <div class="headline2">
-  <button @click="onclick">Delete Game</button>
+  <button @click="">Delete Game</button>
   </div>
 </template>
+
+
+
 
 <style>
 
@@ -21,6 +24,8 @@
 }
 
 </style>
+
+
 
 <script setup lang="ts">
 </script>

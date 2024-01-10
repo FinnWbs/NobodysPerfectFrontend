@@ -106,7 +106,7 @@ export default {
           .then(data => {
             console.log('Success:', data);
             // Reset form or handle success
-            this.$router.push(`/game/${this.game.gameId}`);
+            this.$router.push(`/game/${this.$route.params.id}/${this.newPlayer}`);
           })
           .catch(error => console.log('error', error));
     }

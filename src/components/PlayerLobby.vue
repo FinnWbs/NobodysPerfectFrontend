@@ -1,6 +1,7 @@
 <template>
+
   <div v-if="game">
-    <p class=".font-weight-black, text-lg-h6, headline" style="display: flex; justify-content: center">{{ game.name }}</p>
+    <p class=".font-weight-black, text-lg-h6, headline" style="display: flex; justify-content: center">{{ game.name }}{{PlayerID}}</p>
     <br/>
     <ul>
       <div class="text-h5">
@@ -42,6 +43,7 @@ export default {
   },
   created() {
     this.getGameById(this.$route.params.id);
+    this.PlayerID = this.$route.params.newPlayer;
   },
   methods: {
     getGameById (id) {
