@@ -1,12 +1,23 @@
 <template>
   <div class="formCreateContainer">
-
     <form @submit.prevent="save" class="formContainer">
       <div class="formRow">
-        <input type="text" id="gameName" v-model="gameName" :placeholder="gameNamePlaceholder" class="formInput" />
+        <input
+          type="text"
+          id="gameName"
+          v-model="gameName"
+          :placeholder="gameNamePlaceholder"
+          class="formInput"
+        />
       </div>
       <div class="formRow">
-        <input type="text" id="gameCreatorName" v-model="gameCreatorName" :placeholder="creatorNamePlaceholder" class="formInput" />
+        <input
+          type="text"
+          id="gameCreatorName"
+          v-model="gameCreatorName"
+          :placeholder="creatorNamePlaceholder"
+          class="formInput"
+        />
       </div>
       <button type="submit" class="formButton">Create Game</button>
     </form>
@@ -14,7 +25,7 @@
 </template>
 
 <script>
-import { RouterLink } from "vue-router";
+import { RouterLink } from 'vue-router'
 
 export default {
   name: 'DynamicForm',
@@ -25,31 +36,31 @@ export default {
       gameName: '',
       gameCreatorName: '',
       gameNamePlaceholder: 'Game Name',
-      creatorNamePlaceholder:'Creator Name'
+      creatorNamePlaceholder: 'Creator Name',
     }
   },
   methods: {
     save() {
-      const endpoint = 'http://localhost:8080/game';
+      const endpoint = 'http://localhost:8080/game'
       const data = {
         gameName: this.gameName,
-        gameCreatorName: this.gameCreatorName
-      };
+        gameCreatorName: this.gameCreatorName,
+      }
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      };
+        body: JSON.stringify(data),
+      }
       fetch(endpoint, requestOptions)
-          .then(response => response.json())
-          .then(data => {
-            console.log('Success:', data);
-            // Reset form or handle success
-            this.$router.push(`/game/${data.id}`);
-          })
-          .catch(error => console.log('error', error));
-    }
-  }
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Success:', data)
+          // Reset form or handle success
+          this.$router.push(`/game/${data.id}/${this.gameCreatorName}`)
+        })
+        .catch((error) => console.log('error', error))
+    },
+  },
 }
 </script>
 
@@ -58,12 +69,16 @@ export default {
   border: solid 1px white;
   max-width: 500px;
   border-radius: 16px;
-  padding: 16px
+  padding: 16px;
 }
 
 .formRow {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-bottom: 1rem;
-  border-bottom: solid 1px white;
+  border: solid 1px white;
+  border-radius: 8px;
 }
 
 .formInput {
@@ -76,9 +91,9 @@ export default {
   padding: 8px;
   border-radius: 16px;
   &:hover {
-    background: red;
+    background: dimgray;
   }
-  width: 100%
+  width: 100%;
 }
 
 .formCreateContainer {
@@ -86,5 +101,6 @@ export default {
   display: flex;
   justify-content: center;
   color: #2c3e50;
+  margin-top: 200px;
 }
 </style>

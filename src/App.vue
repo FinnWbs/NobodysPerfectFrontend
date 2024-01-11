@@ -1,20 +1,24 @@
 import { RouterLink, RouterView } from 'vue-router'
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-
 </script>
 
 <template>
-  <Button>
+  <header>
+    <Button>
       <v-btn a href="/" style="text-decoration: none" height="50" width="100">
         Home
       </v-btn>
-  </Button>
-
+    </Button>
+  </header>
   <RouterView />
 </template>
 
 <style scoped>
+header {
+  padding-bottom: 30px;
+}
+
 Button {
   font-weight: bold;
   font-size: xx-large;
@@ -29,8 +33,6 @@ nav {
   text-align: center;
   margin-top: 2rem;
 }
-
-
 
 nav a.router-link-exact-active:hover {
   background-color: transparent;
@@ -47,7 +49,6 @@ nav a:first-of-type {
 }
 
 @media (min-width: 1024px) {
-
   nav {
     text-align: left;
     margin-left: -1rem;
