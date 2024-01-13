@@ -1,57 +1,65 @@
 <template>
   <p class=".font-weight-black, headline" style="text-decoration: underline">
     {{ game.name }}
-  </p>
 
-  <br />
-  <br />
-  <div1 class="boxPlayerList">
-    <div2 class="boxPlayerListItems">
-      <br/>
-      <div class="form" v-for="player in game.spieler" :key="player.id">
-        <span :class="{ highlightedPlayer: player.playerName === PlayerID }">
-          {{ player.playerName }} - Punktzahl: {{ player.punktzahl }}
-          <input v-model="updatedPunktzahl" type="number" placeholder="Neue Punktzahl" />
-        <v-btn @click="updatePunktzahl(player.id)">Aktualisieren</v-btn>
-        </span>
+  </p>
+  <br/>
+  <br/>
+  <br/>
+  <div class='boxPlayerList'>
+    <div class="form" v-for="player in game.spieler" :key="player.id">
+      <span :class="getPlayerHighlightClass(player)">
+        {{ player.playerName }} - Punktzahl: {{ player.punktzahl }}
+      </span>
+      <div class="input-container">
+        <input v-model="updatedPunktzahl" type="number" placeholder="Neue Punktzahl" style="width: 40px; border: solid 1px white"/>
+        <v-btn @click="updatePunktzahl(player.id)">confirm</v-btn>
       </div>
-    </div2>
-  </div1>
+    </div>
+  </div>
   <DeleteGameButton @click="deleteGame" />
-  <v-btn @click="updatePunktzahl">+1</v-btn>
+
 </template>
 
 <style>
-.form {
-  margin-bottom: 1rem;
-  border-bottom: solid 1px white;
-  width: 200px;
-}
 .headline {
   font-size: xxx-large;
   color: #181818;
   font-weight: bold;
 }
-.playerHighlight {
-  font-size: large;
-  color: #181818;
-  border-color: #181400;
-  border: 4px;
-}
 .boxPlayerList {
-  display: flex;
-  justify-content: center;
   border: 2px solid #181818;
-  margin-left: 100px;
-  margin-right: 1600px;
+  margin-left: 10%;
+  margin-right: 70%;
   padding-top: 20px;
   padding-bottom: 40px;
 }
-.boxPlayerListItems {
-  flex-direction: column;
+.form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: solid 1px white;
+  margin: 1rem 2rem;
 }
+
 .highlightedPlayer {
+  color: black; /* Take all available space, pushing the input-container to the right */
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+}
+.highlightedCreator {
+  color: blue;
+}
+
+.highlightedSelf {
   color: black;
+}
+
+.highlightedHighestScorer {
+  color: red;
 }
 </style>
 
@@ -71,6 +79,8 @@ export default {
       PlayerID: '',
       Spieler: null,
       updatedPunktzahl: 0, // Neu hinzugefügt
+      highestScorer: null,
+      gameCreatorName: '',
     }
   },
   created() {
@@ -78,30 +88,37 @@ export default {
     this.PlayerID = this.$route.params.playerid
   },
   methods: {
-    // updatePunktzahl(player) {
-    //   const endpoint = `http://localhost:8080/player/updatePunktzahl/${player.id}`
-    //   const requestOptions = {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ punktzahl: player.punktzahl + 1 }),
-    //   }
-    //
-    //   fetch(endpoint, requestOptions)
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       console.log('Success:', data)
-    //       this.getGameById(this.$route.params.id)
-    //     })
-    //     .catch((error) => console.log('error', error))
-    // },
+    getPlayerHighlightClass(player) {
+      if (player.playerName === this.gameCreatorName) {
+        return 'highlightedCreator';
+      } else if (player.playerName === this.PlayerID) {
+        return 'highlightedSelf';
+      } else if (player.id === this.highestScorer.id) {
+        return 'highlightedHighestScorer';
+      } else {
+        return ''; // No specific highlighting
+      }
+    },
+    getHighestScorer() {
+      if (this.game && this.game.spieler && this.game.spieler.length > 0) {
+        this.highestScorer = this.game.spieler.reduce((prev, current) => {
+          return (prev.punktzahl > current.punktzahl) ? prev : current;
+        });
+      }
+    },
     updatePunktzahl(playerId) {
-      const endpoint = `http://localhost:8080/increaseScore/${playerId}`;
+      const endpoint = `http://localhost:8080/game/increaseScore/${playerId}`;
       const data = { punktzahl: this.updatedPunktzahl };
       const requestOptions = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       };
+      // updates local player punktzahl before server request is handled but error handling might have to be implemented
+      const updatedPlayerIndex = this.game.spieler.findIndex(player => player.id === playerId);
+      if (updatedPlayerIndex !== -1) {
+        this.game.spieler[updatedPlayerIndex].punktzahl = this.updatedPunktzahl;
+      }
       fetch(endpoint, requestOptions)
         .then(response => response.json())
         .then(data => {
@@ -120,18 +137,10 @@ export default {
         .then((response) => response.json())
         .then((result) => {
           this.game = result
-        })
-        .catch((error) => console.log('error', error))
-    },
-    getSpielerById(id) {
-      const endpoint = `http://localhost:8080/${id}`
-      const requestOptions = {
-        method: 'GET',
-      }
-      fetch(endpoint, requestOptions)
-        .then((response) => response.json())
-        .then((result) => {
-          this.Spieler = result
+          if (this.game && this.game.spieler && this.game.spieler.length > 0) {
+            this.gameCreatorName = this.game.spieler[0].playerName;
+          }
+          this.getHighestScorer(); // Hinzugefügt, um den höchsten Scorer zu aktualisieren
         })
         .catch((error) => console.log('error', error))
     },

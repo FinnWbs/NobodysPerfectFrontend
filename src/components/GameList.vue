@@ -55,14 +55,12 @@
   </v-card>
   <v-chip-group class="listForm" v-for="game in items" :key="game.id">
     <RouterLink :to="`/game/${game.id}`">
-      <v-chip class="bg-grey-lighten-5" label style="width: 600px; height: 50px">
+      <v-chip class="bg-grey-lighten-5" label style="width: 400px; height: 50px; margin: 4px 8px 4px 0">
         {{ game.name }}
-
       </v-chip>
-
     </RouterLink>
-    <input v-model="updatedGameName" placeholder="Neuer Name" />
-    <v-btn @click="updateGameName(game.id)">Aktualisieren</v-btn>
+    <input v-model="updatedGameName" placeholder="Neuer Name" style="width: 100px; height: 50px; margin: 4px 8px 4px 0; border: solid 1px white; border-radius: 5px"/>
+    <v-btn style="height: 50px; margin: 4px 8px 4px 0" @click="updateGameName(game.id)">Enter</v-btn>
   </v-chip-group>
   <div style="display: flex; justify-content: center">
     <CreateGameButton />
@@ -156,6 +154,6 @@ export default {
   }
 }
 .chipStyle {
-
+  margin: 4px 8px 4px 0;
 }
 </style>
