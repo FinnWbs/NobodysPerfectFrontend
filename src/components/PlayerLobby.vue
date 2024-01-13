@@ -17,7 +17,7 @@
       </div>
     </div>
   </div>
-  <DeleteGameButton @click="deleteGame" />
+  <DeleteGameButton v-if="isGameCreator" @click="deleteGame" />
 
 </template>
 
@@ -86,6 +86,11 @@ export default {
   created() {
     this.getGameById(this.$route.params.id)
     this.PlayerID = this.$route.params.playerid
+  },
+  computed: {
+    isGameCreator() {
+      return this.PlayerID === this.gameCreatorName;
+    },
   },
   methods: {
     getPlayerHighlightClass(player) {
