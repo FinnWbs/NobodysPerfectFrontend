@@ -42,6 +42,9 @@ export default {
   methods: {
     save() {
       const endpoint = 'http://localhost:8080/game'
+      if (this.gameName === undefined || this.gameName === "" || this.gameName === null) {
+        this.error = "please enter gameName";
+      }
       const data = {
         gameName: this.gameName,
         gameCreatorName: this.gameCreatorName,

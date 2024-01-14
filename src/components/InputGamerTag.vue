@@ -14,10 +14,10 @@
         id="newPlayer"
         v-model="newPlayer"
       />
+      <p>{{error}}</p>
       <v-btn type="submit">join</v-btn>
     </div>
   </form>
-  <DeleteGameButton @click="deleteGame"/>
 </template>
 
 <style>
@@ -66,6 +66,7 @@ export default {
       gameId: '',
       newPlayer: '',
       playerID: '',
+      error: null,
     }
   },
   created() {
@@ -95,6 +96,10 @@ export default {
     },
     joinGame() {
       const endpoint = 'http://localhost:8080/game/join'
+      if (this.newPlayer === undefined || this.newPlayer === "" || this.newPlayer === null) {
+        this.error = "please enter player name";
+        return
+      }
       const data = {
         gameId: this.$route.params.id,
         spielerName: this.newPlayer,

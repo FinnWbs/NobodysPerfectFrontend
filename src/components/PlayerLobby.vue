@@ -1,7 +1,7 @@
 <template>
+  <div v-if='game'>
   <p class=".font-weight-black, headline" style="text-decoration: underline">
     {{ game.name }}
-
   </p>
   <br/>
   <br/>
@@ -9,16 +9,31 @@
   <div class='boxPlayerList'>
     <div class="form" v-for="player in game.spieler" :key="player.id">
       <span :class="getPlayerHighlightClass(player)">
-        {{ player.playerName }} - Punktzahl: {{ player.punktzahl }}
+        {{ creatorDisplayName(player) }} - Punktzahl: {{ player.punktzahl }}
       </span>
       <div class="input-container">
         <input v-model="updatedPunktzahl" type="number" placeholder="Neue Punktzahl" style="width: 40px; border: solid 1px white"/>
-        <v-btn @click="updatePunktzahl(player.id)">confirm</v-btn>
+        <v-btn @click="updatePunktzahl(player.playerName)">confirm</v-btn>
       </div>
     </div>
   </div>
-  <DeleteGameButton v-if="isGameCreator" @click="deleteGame" />
+  <div class='chatBox'>
+<!--    <input class="chatOutput" style='border: solid 2px white; margin-left: 1rem' v-model="songInput" type="text" placeholder="Input" />-->
 
+    <v-btn class="chatOutput" @click="getAnswer">Get Answer</v-btn>
+    <div class="timer chatOutput" v-if="remainingTime > 0">
+      Time: {{ remainingTime }} seconds
+    </div>
+    <p> {{game.currentQuestion}}</p>
+    <ul>
+      <v-btn v-for="(answer, index) in game.possibleAnswers" :key="index" @click="checkAnswer(answer)">
+        {{ answer }}
+      </v-btn>
+    </ul>
+
+  </div>
+  <DeleteGameButton v-if="isGameCreator" @click="deleteGame" />
+  </div>
 </template>
 
 <style>
@@ -30,7 +45,7 @@
 .boxPlayerList {
   border: 2px solid #181818;
   margin-left: 10%;
-  margin-right: 70%;
+  margin-right: 65%;
   padding-top: 20px;
   padding-bottom: 40px;
 }
@@ -41,11 +56,6 @@
   border-bottom: solid 1px white;
   margin: 1rem 2rem;
 }
-
-.highlightedPlayer {
-  color: black; /* Take all available space, pushing the input-container to the right */
-}
-
 .input-container {
   display: flex;
   align-items: center;
@@ -61,12 +71,26 @@
 .highlightedHighestScorer {
   color: red;
 }
+.chatOutput {
+  color: #181818;
+  font-weight: bold;
+}
+.chatBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 10%;
+  padding-left: 10%;
+  margin-left: 20%;
+  margin-right: 20%;
+}
 </style>
 
 <script>
 import { RouterLink } from 'vue-router'
 import DeleteGameButton from '@/components/DeleteGameButton.vue'
 import JoinGameButton from '@/components/JoinGameButton.vue'
+import OpenAI from 'openai'
 
 export default {
   name: 'DynamicForm',
@@ -81,10 +105,21 @@ export default {
       updatedPunktzahl: 0, // Neu hinzugefügt
       highestScorer: null,
       gameCreatorName: '',
+      inputText: "",
+      answer: '',
+      // songInput: '',
+      givenSongName: '',
+      description: '',
+      possibleAnswers: [],
+      timer: null,
+      remainingTime: 30,
     }
   },
   created() {
-    this.getGameById(this.$route.params.id)
+    this.getGameById(this.$route.params.id);
+    setInterval(() => {
+      this.getGameById(this.$route.params.id);
+    }, 2000);
     this.PlayerID = this.$route.params.playerid
   },
   computed: {
@@ -93,6 +128,116 @@ export default {
     },
   },
   methods: {
+    checkAnswer(selectedAnswer) {
+      clearInterval(this.timer);
+
+      if (selectedAnswer === this.game.givenSongName) {
+        this.updatePunktzahl(this.PlayerID)
+        console.log('Correct answer!');
+        // Handle correct answer logic here
+      } else {
+        console.log('Incorrect answer!');
+        // Handle incorrect answer logic here
+      }
+    },
+    async getAnswer() {
+      // if (this.songInput.trim() === '') {
+      //   // Handle empty song input
+      //   return;
+      // }
+
+      const prompt = `
+      Imagine you are a funny game master of a quiz.
+      Your task is it to ask one question.
+      The question is about the name of a song.
+      just like const randomNumber = Math.floor(Math.random() * 26) + 1; you should randomly pick a letter of the 26 letters of the alphabet.
+
+      Your will rewrite the lyrics of a random Song that starts with the random letter you have chosen as the game master and within 8 sentences max, without using the lyrics and the name of the artist. The description shouldn't contain the name of the song or any words used in the title of the song.
+      In addition to that you should give 4 possible answers and provide the name of the songs and the artist names. On a scale of 1-10 in terms of how specific the description should be, it should be a 7. Also, you should always pick a new song each time this prompt is written.
+      Your output should be in the following parsable JSON format:
+
+      {
+         "givenSongName": "name of the song and artist of song",
+         "description": "this should be the description of the song",
+         "possibleAnswers": ["givenSongName and artist of givenSongName", "other song and artist 2", "other song and artist 3", "other song and artist 4"]
+      }
+    `;
+
+      await this.getGptCompletition(prompt);
+      this.remainingTime = 30;
+
+      // Start the timer for 30 seconds
+      this.timer = setInterval(() => {
+        // Decrease the remaining time
+        this.remainingTime--;
+
+        // Check if the time has run out
+        if (this.remainingTime < 0) {
+          clearInterval(this.timer);
+          console.log("No one found the right answer");
+          // You can add additional logic here if needed
+        }
+      }, 1000);
+
+
+
+    },
+    async getGptCompletition(input) {
+      const openai = new OpenAI({ apiKey: import.meta.env.VITE_OPENAI_API_KEY, dangerouslyAllowBrowser: true });
+
+      const conversation = [
+        { role: 'system', content: 'You are a funny game master of a quiz.' },
+        // Add more conversation history as needed
+      ];
+
+      // Add the user's prompt to the conversation
+      conversation.push({ role: 'user', content: input });
+
+
+        // Generate completions using the conversation
+        const completion = await openai.chat.completions.create({
+          messages: conversation,
+          model: 'gpt-3.5-turbo-1106',
+        });
+
+
+      const response = completion.choices[0].message.content;
+      const parsedResponse = JSON.parse(response)
+
+      // Extract the relevant parts
+      const givenSongName = parsedResponse.givenSongName;
+      const description = parsedResponse.description;
+      const possibleAnswers = parsedResponse.possibleAnswers;
+
+      // Now you can use these variables as needed
+      console.log("Given Song Name:", parsedResponse.givenSongName);
+      console.log("Description:", parsedResponse.description);
+      console.log("Possible Answers:", parsedResponse.possibleAnswers);
+
+      // Store the values in your component's data
+      this.givenSongName = givenSongName;
+      this.description = description;
+      this.possibleAnswers = this.shuffleArray(possibleAnswers);
+
+      if (description.trim() !== '') {
+        this.updateQuestion();
+      }
+    },
+    shuffleArray(array) {
+      // Fisher-Yates shuffle algorithm
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    },
+    creatorDisplayName(player) {
+      if (player.playerName === this.gameCreatorName) {
+        return `Creator: ${player.playerName}`;
+      } else {
+        return player.playerName;
+      }
+    },
     getPlayerHighlightClass(player) {
       if (player.playerName === this.gameCreatorName) {
         return 'highlightedCreator';
@@ -111,8 +256,9 @@ export default {
         });
       }
     },
-    updatePunktzahl(playerId) {
-      const endpoint = `http://localhost:8080/game/increaseScore/${playerId}`;
+    updatePunktzahl(playerName) {
+      console.log("player", playerName);
+      const endpoint = `http://localhost:8080/game/increaseScore/${playerName}`;
       const data = { punktzahl: this.updatedPunktzahl };
       const requestOptions = {
         method: 'PUT',
@@ -120,7 +266,7 @@ export default {
         body: JSON.stringify(data),
       };
       // updates local player punktzahl before server request is handled but error handling might have to be implemented
-      const updatedPlayerIndex = this.game.spieler.findIndex(player => player.id === playerId);
+      const updatedPlayerIndex = this.game.spieler.findIndex(player => player.id === playerName);
       if (updatedPlayerIndex !== -1) {
         this.game.spieler[updatedPlayerIndex].punktzahl = this.updatedPunktzahl;
       }
@@ -177,6 +323,28 @@ export default {
           this.$router.push(`/game/${this.game.id}/join`)
         })
         .catch((error) => console.log('error', error))
+    },
+    updateQuestion() {
+      const endpoint = `http://localhost:8080/game/updateQuestion/${this.game.id}`;
+
+      const data = {
+        currentQuestion: this.description,
+        possibleAnswers: this.possibleAnswers,
+        givenSongName: this.givenSongName
+      };
+      const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      };
+      fetch(endpoint, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          // Refresh player data after updating the score
+          this.getGameById(this.$route.params.id);
+        })
+        .catch(error => console.log('error', error));
     },
   },
 }
