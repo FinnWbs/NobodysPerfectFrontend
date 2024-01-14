@@ -8,7 +8,7 @@
         :readonly="loading"
         :rules="[rules.required]"
         clearable
-        label="Enter your Gamertag  "
+        label="Enter your Gamertag"
         id="newPlayer"
       ></v-text-field>
         <v-btn type="submit">join</v-btn>

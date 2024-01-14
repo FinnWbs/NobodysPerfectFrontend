@@ -19,7 +19,6 @@
           clearable
           label="Creator Name"
           id="gameCreatorName"
-          placeholder="Enter your password"
         ></v-text-field>
 
         <br />

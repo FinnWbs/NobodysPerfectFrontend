@@ -1,36 +1,44 @@
 <template>
-  <div v-if='game'>
-  <p class=".font-weight-black, headline" style="text-decoration: underline">
+
+  <p class=".font-weight-black, headline" >
     {{ game.name }}
   </p>
-  <br/>
-  <br/>
-  <br/>
-  <div class='boxPlayerList'>
-    <div class="form" v-for="player in game.spieler" :key="player.id">
-      <span :class="getPlayerHighlightClass(player)">
-        {{ creatorDisplayName(player) }} - Punktzahl: {{ player.punktzahl }}
-      </span>
-    </div>
-  </div>
+  <div v-if='game' style='display: flex'>
+    <v-table class='boxPlayerList elevation-8' style='border-radius: 4px'>
+      <thead>
+      <tr>
+        <th class="text-left">Player Name</th>
+        <th class="text-left">Punktzahl</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="player in game.spieler" :key="player.id" >
+          <td :class='getPlayerHighlightClass(player)'>{{ creatorDisplayName(player)}}</td>
+          <td>{{ player.punktzahl }}</td>
+      </tr>
+      </tbody>
+    </v-table>
   <div class='chatBox'>
-<!--    <input class="chatOutput" style='border: solid 2px white; margin-left: 1rem' v-model="songInput" type="text" placeholder="Input" />-->
-
     <v-btn class="chatOutput" @click="getAnswer">Get Answer</v-btn>
+    <v-card style='margin-top: 1rem'>
+      <v-card-text>
+        {{game.currentQuestion}}
+      </v-card-text>
+    </v-card>
     <div class="timer chatOutput" v-if="remainingTime > 0">
       Time: {{ remainingTime }} seconds
     </div>
-    <p> {{game.currentQuestion}}</p>
-    <ul>
-      <v-btn v-for="(answer, index) in game.possibleAnswers" :key="index" @click="checkAnswer(answer)">
+  </div>
+    <ul style='display:flex; flex-direction: column; justify-content: center; flex-wrap: wrap; margin-right: 5%'>
+      <v-btn style='margin: 0.5rem' v-for="(answer, index) in game.possibleAnswers" :key="index" @click="checkAnswer(answer)">
         {{ answer }}
       </v-btn>
     </ul>
-
   </div>
   <DeleteGameButton v-if="isGameCreator" @click="deleteGame" />
-  </div>
+
 </template>
+
 
 <style>
 .headline {
@@ -38,24 +46,16 @@
   font-size: xxx-large;
   color: #181818;
   font-weight: bold;
+  margin-bottom: 5%;
+  justify-content: center;
 }
 .boxPlayerList {
-  border: 2px solid #181818;
-  margin-left: 10%;
-  margin-right: 65%;
   padding-top: 20px;
   padding-bottom: 40px;
-}
-.form {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: solid 1px white;
-  margin: 1rem 2rem;
-}
-.input-container {
-  display: flex;
-  align-items: center;
+  margin-left: 5%;
+  margin-right: 5%;
+  padding-left: 1%;
+  padding-right: 1%;
 }
 .highlightedCreator {
   color: blue;
@@ -76,10 +76,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-right: 10%;
-  padding-left: 10%;
-  margin-left: 20%;
-  margin-right: 20%;
+  margin-right: 5%;
 }
 </style>
 
@@ -88,6 +85,7 @@ import { RouterLink } from 'vue-router'
 import DeleteGameButton from '@/components/DeleteGameButton.vue'
 import JoinGameButton from '@/components/JoinGameButton.vue'
 import OpenAI from 'openai'
+import { readonly } from 'vue'
 
 export default {
   name: 'DynamicForm',
@@ -104,12 +102,16 @@ export default {
       gameCreatorName: '',
       inputText: "",
       answer: '',
-      // songInput: '',
       givenSongName: '',
       description: '',
       possibleAnswers: [],
       timer: null,
       remainingTime: 30,
+      playerAttributes: [
+        { text: 'Player Name', value: 'playerName' },
+        { text: 'Punktzahl', value: 'punktzahl' },
+      ],
+      loading: false,
     }
   },
   created() {
@@ -143,13 +145,13 @@ export default {
       //   return;
       // }
 
+      const randomLetter = this.generateRandomLetter();
       const prompt = `
       Imagine you are a funny game master of a quiz.
       Your task is it to ask one question.
       The question is about the name of a song.
-      just like const randomNumber = Math.floor(Math.random() * 26) + 1; you should randomly pick a letter of the 26 letters of the alphabet.
 
-      Your will rewrite the lyrics of a random Song that starts with the random letter you have chosen as the game master and within 8 sentences max, without using the lyrics and the name of the artist. The description shouldn't contain the name of the song or any words used in the title of the song.
+      Your will rewrite the lyrics of a random Song that starts with the letter ${randomLetter} you have chosen as the game master and within 8 sentences max, without using the lyrics and the name of the artist. The description shouldn't contain the name of the song or any words used in the title of the song.
       In addition to that you should give 4 possible answers and provide the name of the songs and the artist names. On a scale of 1-10 in terms of how specific the description should be, it should be a 7. Also, you should always pick a new song each time this prompt is written.
       Your output should be in the following parsable JSON format:
 
@@ -254,6 +256,7 @@ export default {
       }
     },
     updatePunktzahl(playerName) {
+
       console.log("player", playerName);
       const endpoint = `http://localhost:8080/game/increaseScore/${playerName}`;
       const requestOptions = {
@@ -340,6 +343,11 @@ export default {
           this.getGameById(this.$route.params.id);
         })
         .catch(error => console.log('error', error));
+    },
+    generateRandomLetter() {
+      const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const randomIndex = Math.floor(Math.random() * alphabet.length);
+      return alphabet.charAt(randomIndex);
     },
   },
 }
