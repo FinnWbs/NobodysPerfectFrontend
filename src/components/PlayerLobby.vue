@@ -259,11 +259,9 @@ export default {
     updatePunktzahl(playerName) {
       console.log("player", playerName);
       const endpoint = `http://localhost:8080/game/increaseScore/${playerName}`;
-      const data = { punktzahl: this.updatedPunktzahl };
       const requestOptions = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
       };
       // updates local player punktzahl before server request is handled but error handling might have to be implemented
       const updatedPlayerIndex = this.game.spieler.findIndex(player => player.id === playerName);
