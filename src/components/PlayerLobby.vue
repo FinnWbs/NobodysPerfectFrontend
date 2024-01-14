@@ -1,6 +1,6 @@
 <template>
 
-  <p class=".font-weight-black, headline" >
+  <p class=".font-weight-black, headline" style="text-decoration: underline">
     {{ game.name }}
   </p>
   <div v-if='game' style='display: flex'>
