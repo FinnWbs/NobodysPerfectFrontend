@@ -6,12 +6,12 @@
       <v-text-field
         v-model="newPlayer"
         :readonly="loading"
-        :rules="[rules.required]"
+        :rules="[rules.validatePlayerName]"
         clearable
         label="Enter your Gamertag"
         id="newPlayer"
       ></v-text-field>
-        <v-btn type="submit">join</v-btn>
+        <v-btn style='margin-top: 10px' type="submit">join</v-btn>
         </v-form>
       <div v-if='error'>
         <iframe style="border: none;"
@@ -48,8 +48,24 @@ export default {
       playerID: '',
       error: null,
       rules: {
-        required: (value) => !!value || 'Field is required',
-      },
+        validatePlayerName: (value) => {
+          if (!value) {
+            return 'Field is required';
+          }
+
+          const playerNameExists = this.game && this.game.spieler && this.game.spieler.some(player => player.playerName === value);
+
+          if (playerNameExists) {
+            return 'Player with the same name already exists in the game';
+          }
+
+          if (value.length < 3 || value.length > 12) {
+            return 'Player name must be between 3 and 12 characters';
+          }
+
+          return true; // Validation passed
+        },
+      }
     }
   },
   created() {
@@ -79,9 +95,18 @@ export default {
     },
     joinGame() {
       const endpoint = 'http://localhost:8080/game/join'
-      if (this.newPlayer === undefined || this.newPlayer === "" || this.newPlayer === null) {
-        this.error = "please enter player name";
-        return
+      const playerNameExists = this.game && this.game.spieler && this.game.spieler.some(player => player.playerName === this.newPlayer);
+
+      if (playerNameExists) {
+        this.error = 'Player with the same name already exists in the game';
+        return;
+      }
+
+      const validationMessage = this.rules.validatePlayerName(this.newPlayer);
+
+      if (validationMessage !== true) {
+        this.error = validationMessage;
+        return;
       }
       const data = {
         gameId: this.$route.params.id,

@@ -5,7 +5,7 @@
         <v-text-field
           v-model="gameName"
           :readonly="loading"
-          :rules="[rules.required]"
+          :rules="[rules.required, rules.validateGameName]"
           class="mb-2"
           clearable
           label="Game Name"
@@ -15,7 +15,7 @@
         <v-text-field
           v-model="gameCreatorName"
           :readonly="loading"
-          :rules="[rules.required]"
+          :rules="[rules.required, rules.validateGameCreatorName]"
           clearable
           label="Creator Name"
           id="gameCreatorName"
@@ -54,6 +54,27 @@ export default {
       error: null,
       rules: {
         required: (value) => !!value || 'Field is required',
+        validateGameName: (value) => {
+          if (!value) {
+            return 'Field is required';
+          }
+
+          if (value.length < 3 || value.length > 12) {
+            return 'Game name must be between 3 and 12 characters';
+          }
+
+          return true; // Validation passed
+        },
+        validateGameCreatorName: (value) => {
+          if (!value) {
+            return 'Field is required';
+          }
+          // Check if the length is between 3 and 12 characters
+          if (value.length < 3 || value.length > 12) {
+            return 'Creator Name must be between 3 and 12 characters';
+          }
+          return true;
+        },
       },
       loading: false,
     }
@@ -71,6 +92,22 @@ export default {
         this.loading = false
         return
       }
+
+      const validationMessage = this.rules.validateGameName(this.gameName);
+
+      if (validationMessage !== true) {
+        this.error = validationMessage;
+        this.loading = false;
+        return;
+      }
+      const validationMessage2 = this.rules.validateGameCreatorName(this.gameCreatorName);
+
+      if (validationMessage2 !== true) {
+        this.error = validationMessage2;
+        this.loading = false;
+        return;
+      }
+
       const data = {
         gameName: this.gameName,
         gameCreatorName: this.gameCreatorName,
