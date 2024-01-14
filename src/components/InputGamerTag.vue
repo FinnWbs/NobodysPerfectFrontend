@@ -1,51 +1,31 @@
 <template>
-  <div v-if="game">
-    <p class=".font-weight-black, headline" style="text-decoration: underline">
-      {{ game.name }}
-    </p>
-  </div>
-  <br />
-  <p class="headline2">ENTER YOUR GAMERTAG</p>
   <form @submit.prevent="joinGame">
-    <div class="joinButton">
-      <input
-        class="gamertagInput"
-        type="text"
-        id="newPlayer"
+    <v-card class="mx-auto px-6 py-8" max-width="344">
+      <v-card-title class="text-h6 text-md-h5 text-lg-h4"></v-card-title>
+      <v-form v-model="form" @submit.prevent="joinGame">
+      <v-text-field
         v-model="newPlayer"
-      />
-      <p>{{error}}</p>
-      <v-btn type="submit">join</v-btn>
-    </div>
+        :readonly="loading"
+        :rules="[rules.required]"
+        clearable
+        label="Enter your Gamertag  "
+        id="newPlayer"
+      ></v-text-field>
+        <v-btn type="submit">join</v-btn>
+        </v-form>
+      <div v-if='error'>
+        <iframe style="border: none;"
+                src="https://lottie.host/embed/15dab88b-5f7e-402c-9f1d-d28643e48a19/uIraBm2sqD.json">
+        </iframe>
+      </div>
+
+    </v-card>
   </form>
+
+
 </template>
 
 <style>
-.headline {
-  font-size: xxx-large;
-  color: #181818;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-}
-.headline2 {
-  font-size: x-large;
-  color: #181400;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-}
-.gamertagInput {
-  font-size: x-large;
-  border: solid 1px black;
-}
-.joinButton {
-  font-size: x-large;
-  color: #181400;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-}
 input[type='text'] {
   text-align: center;
 }
@@ -67,6 +47,9 @@ export default {
       newPlayer: '',
       playerID: '',
       error: null,
+      rules: {
+        required: (value) => !!value || 'Field is required',
+      },
     }
   },
   created() {

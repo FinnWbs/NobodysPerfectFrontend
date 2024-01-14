@@ -11,10 +11,6 @@
       <span :class="getPlayerHighlightClass(player)">
         {{ creatorDisplayName(player) }} - Punktzahl: {{ player.punktzahl }}
       </span>
-      <div class="input-container">
-        <input v-model="updatedPunktzahl" type="number" placeholder="Neue Punktzahl" style="width: 40px; border: solid 1px white"/>
-        <v-btn @click="updatePunktzahl(player.playerName)">confirm</v-btn>
-      </div>
     </div>
   </div>
   <div class='chatBox'>
@@ -38,6 +34,7 @@
 
 <style>
 .headline {
+  display: flex;
   font-size: xxx-large;
   color: #181818;
   font-weight: bold;
